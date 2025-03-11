@@ -2684,7 +2684,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Demo Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8226,7 +8226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6681eea5e237aa7409418403179925f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useSimulation: 1
+  useSimulation: 0
   chordA: {fileID: 1392518502}
   chordD: {fileID: 1392518502}
   chordE: {fileID: 1392518502}
@@ -12113,6 +12113,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 378069522}
     m_Modifications:
+    - target: {fileID: 742966565496789585, guid: db5953b2dc3298f43b4a07f16a5b10a3, type: 3}
+      propertyPath: m_text
+      value: Demo Text
+      objectReference: {fileID: 0}
     - target: {fileID: 751275936782599992, guid: db5953b2dc3298f43b4a07f16a5b10a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
