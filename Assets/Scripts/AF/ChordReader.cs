@@ -13,16 +13,28 @@ public class ChordReader : MonoBehaviour
     public TextMeshProUGUI chordText;
     public TextMeshProUGUI sensorText;
 
-    [Header("Finger Dots")]
-    public Transform dot1, dot2, dot3;
-    public float xRange = 1.0f;
-    public float yPos = 0.0f;
+    [Header("Finger Dot Transforms")]
+    // Assign these in the Inspector, e.g. Spheres named Dot1, Dot2, Dot3
+    public Transform dot1;
+    public Transform dot2;
+    public Transform dot3;
+
+    [Header("Mapping Settings")]
+    // We'll map sensor values 0..1023 -> fraction 0..1 -> localX from -0.5..+0.5
+    public float xRange = 1.0f;  // total width for mapping
+    private float minX;
+    private float maxX;
+
+    public float yPos = 0.0f;  // keep them on the same y-level
     public float zOffsetDot1 = 0f;
     public float zOffsetDot2 = 0.1f;
     public float zOffsetDot3 = -0.1f;
 
     void Start()
-    {
+    {  
+        minX = -xRange * 0.5f;
+        maxX = xRange * 0.5f;
+
         try
         {
             serialPort = new SerialPort(portName, baudRate);
@@ -72,9 +84,17 @@ public class ChordReader : MonoBehaviour
             if (sensorText != null)
                 sensorText.text = $"S1={s1}, S2={s2}, S3={s3}";
 
-            UpdateDot(dot1, s1, 0f);
-            UpdateDot(dot2, s2, zOffset: 0.1f);
-            UpdateDot(dot3, s3, zOffset: -0.1f);
+            // Sensor to fraction
+            float f1 = Mathf.Clamp01(s1 / 1023f);
+            float f2 = Mathf.Clamp01(s2 / 1023f);
+            float f3 = Mathf.Clamp01(s3 / 1023f);
+
+            Debug.Log($"Fractions calculated: {f1}, {f2}, {f3}");
+
+            // Positions
+            if (dot1) dot1.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f1), yPos, zOffsetDot1);
+            if (dot2) dot2.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f2), yPos, zOffsetDot2);
+            if (dot3) dot3.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f3), yPos, zOffsetDot3);
         }
     }
 
