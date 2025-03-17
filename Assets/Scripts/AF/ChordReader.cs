@@ -15,7 +15,19 @@ public class ChordReader : MonoBehaviour
     [Header("Finger Dots")]
     public Transform dot1, dot2, dot3;
     public float xRange = 1.0f;
-    public float yRange = 1.0f;
+    public float yPos = 0.0f;
+    public float zOffsetDot1 = 0f;
+    public float zOffsetDot2 = 0.1f;
+    public float zOffsetDot3 = -0.1f;
+     
+     [Header("Audio Clips")]
+    public AudioClip chordASound;
+
+    private AudioSource audioSource;
+
+    public float yPosDot3 = 0.2f;  // Top dot
+    public float yPosDot2 = 0.0f;  // Middle dot
+    public float yPosDot1 = -0.2f; // Bottom dot
 
     private float timer = 0f;
     private int currentChord = 0;
@@ -23,6 +35,9 @@ public class ChordReader : MonoBehaviour
 
     void Start()
     {
+        
+        audioSource = GetComponent<AudioSource>();
+
         string[] ports = SerialPort.GetPortNames();
         foreach (string port in ports)
         {
@@ -51,9 +66,40 @@ public class ChordReader : MonoBehaviour
             }
             catch { }
         }
-        else
+    }
+
+    void ProcessData(string dataLine)
+    {
+        if (!dataLine.Contains("|")) return;
+
+        string[] parts = dataLine.Split('|');
+        if (parts.Length < 2) return;
+
+        string sensorPart = parts[0];
+        string chordName = parts[1];
+
+        if (chordText != null)
+            chordText.text = chordName;
+
+            PlayChordSound(chordName);
+
+        string[] tokens = sensorPart.Split(',');
+        if (tokens.Length == 3)
         {
             RunMockData();
+        }
+    }
+    void PlayChordSound(string chordName)
+    {
+        switch (chordName)
+        {
+            case "A":
+                audioSource.PlayOneShot(chordASound);
+                break;
+            // Add more cases for other chords
+            default:
+                Debug.LogWarning("No sound assigned for chord: " + chordName);
+                break;
         }
     }
 
