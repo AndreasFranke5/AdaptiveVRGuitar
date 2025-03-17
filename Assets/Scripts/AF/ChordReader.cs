@@ -1,33 +1,25 @@
 using UnityEngine;
-using System.IO.Ports;   // For serial
-using UnityEngine.UI;    // For UI Text (optional)
-using TMPro;             // For TextMeshProUI (optional)
+using TMPro;
+using System.IO.Ports;
 
 public class ChordReader : MonoBehaviour
 {
-    [Header("Serial Port Settings")]
-    public string portName = "COM7"; // e.g. "COM3" on Windows
+    [Header("Serial Settings")]
+    public string portName = "COM7";
     public int baudRate = 9600;
-
     private SerialPort serialPort;
 
     [Header("UI Elements")]
-    public TextMeshProUGUI chordText;   // Show chord name
-    public TextMeshProUGUI sensorText;  // Show raw sensor values
+    public TextMeshProUGUI chordText;
+    public TextMeshProUGUI sensorText;
 
-    [Header("Finger Dot Transforms")]
-    // Assign these in the Inspector, e.g. Spheres named Dot1, Dot2, Dot3
-    public Transform dot1;
-    public Transform dot2;
-    public Transform dot3;
-
-    [Header("Mapping Settings")]
-    // We'll map sensor values 0..1023 -> fraction 0..1 -> localX from -0.5..+0.5
-    public float xRange = 1.0f;  // total width for mapping
-    public float yPos = 0.0f;  // keep them on the same y-level
+    [Header("Finger Dots")]
+    public Transform dot1, dot2, dot3;
+    public float xRange = 1.0f;
+    public float yPos = 0.0f;
     public float zOffsetDot1 = 0f;
-    public float zOffsetDot2 = 0.1f;  // so Dot2 isn't exactly on top of Dot1
-    public float zOffsetDot3 = -0.1f; // just an example offset
+    public float zOffsetDot2 = 0.1f;
+    public float zOffsetDot3 = -0.1f;
 
     void Start()
     {
@@ -36,28 +28,24 @@ public class ChordReader : MonoBehaviour
             serialPort = new SerialPort(portName, baudRate);
             serialPort.ReadTimeout = 50;
             serialPort.Open();
-            Debug.Log("Serial Port opened successfully!");
+            Debug.Log("Serial port successfully opened.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to open port: " + e.Message);
+            Debug.LogError("Failed opening port: " + e.Message);
         }
     }
 
     void Update()
     {
-        if (serialPort == null) return;
-        if (!serialPort.IsOpen) return;
-
-        // Attempt to read a line: e.g. "A|80,60,40"
-        try
+        if (serialPort != null && serialPort.IsOpen)
         {
-            string line = serialPort.ReadLine().Trim();
-            ProcessData(line);
-        }
-        catch (System.Exception)
-        {
-            // timeouts / partial reads ignored
+            try
+            {
+                string line = serialPort.ReadLine().Trim();
+                ProcessData(line);
+            }
+            catch { }
         }
     }
 
@@ -68,17 +56,11 @@ public class ChordReader : MonoBehaviour
         string[] parts = dataLine.Split('|');
         if (parts.Length < 2) return;
 
-        string chordName = parts[0];
-        string sensorPart = parts[1];
+        string sensorPart = parts[0];
+        string chordName = parts[1];
 
-        // Crucial debug log to confirm chordName received:
-        Debug.Log($"ChordName Received: {chordName}");
-
-        // Set Chord text clearly:
         if (chordText != null)
             chordText.text = chordName;
-        else
-            Debug.LogWarning("ChordText is NOT assigned!");
 
         string[] tokens = sensorPart.Split(',');
         if (tokens.Length == 3)
@@ -90,20 +72,18 @@ public class ChordReader : MonoBehaviour
             if (sensorText != null)
                 sensorText.text = $"S1={s1}, S2={s2}, S3={s3}";
 
-            // Sensor to fraction
-            float f1 = Mathf.Clamp01(s1 / 1023f);
-            float f2 = Mathf.Clamp01(s2 / 1023f);
-            float f3 = Mathf.Clamp01(s3 / 1023f);
-
-            Debug.Log($"Fractions calculated: {f1}, {f2}, {f3}");
-
-            // Positions
-            if (dot1) dot1.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f1), yPos, zOffsetDot1);
-            if (dot2) dot2.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f2), yPos, zOffsetDot2);
-            if (dot3) dot3.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f3), yPos, zOffsetDot3);
+            UpdateDot(dot1, s1, 0f);
+            UpdateDot(dot2, s2, zOffset: 0.1f);
+            UpdateDot(dot3, s3, zOffset: -0.1f);
         }
     }
 
+    void UpdateDot(Transform dot, int sensorValue, float zOffset)
+    {
+        float fraction = Mathf.Clamp01(sensorValue / 1023f);
+        float localX = Mathf.Lerp(-xRange / 2, xRange / 2, fraction);
+        dot.localPosition = new Vector3(localX, yPos, zOffset);
+    }
 
     void OnApplicationQuit()
     {
