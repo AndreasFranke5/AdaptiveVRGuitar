@@ -24,13 +24,19 @@ public class ChordReader : MonoBehaviour
     [Header("Mapping Settings")]
     // We'll map sensor values 0..1023 -> fraction 0..1 -> localX from -0.5..+0.5
     public float xRange = 1.0f;  // total width for mapping
+    private float minX;
+    private float maxX;
+
     public float yPos = 0.0f;  // keep them on the same y-level
     public float zOffsetDot1 = 0f;
     public float zOffsetDot2 = 0.1f;  // so Dot2 isn't exactly on top of Dot1
     public float zOffsetDot3 = -0.1f; // just an example offset
 
     void Start()
-    {
+    {  
+        minX = -xRange * 0.5f;
+        maxX = xRange * 0.5f;
+
         try
         {
             serialPort = new SerialPort(portName, baudRate);
@@ -98,9 +104,9 @@ public class ChordReader : MonoBehaviour
             Debug.Log($"Fractions calculated: {f1}, {f2}, {f3}");
 
             // Positions
-            if (dot1) dot1.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f1), yPos, zOffsetDot1);
-            if (dot2) dot2.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f2), yPos, zOffsetDot2);
-            if (dot3) dot3.localPosition = new Vector3(Mathf.Lerp(-0.5f, 0.5f, f3), yPos, zOffsetDot3);
+            if (dot1) dot1.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f1), yPos, zOffsetDot1);
+            if (dot2) dot2.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f2), yPos, zOffsetDot2);
+            if (dot3) dot3.localPosition = new Vector3(Mathf.Lerp(minX, maxX, f3), yPos, zOffsetDot3);
         }
     }
 
