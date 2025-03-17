@@ -15,6 +15,7 @@ public class ChordReader : MonoBehaviour
     [Header("Finger Dots")]
     public Transform dot1, dot2, dot3;
     public float xRange = 1.0f;
+    public float yRange = 1.0f;
     public float yPos = 0.0f;
     public float zOffsetDot1 = 0f;
     public float zOffsetDot2 = 0.1f;
