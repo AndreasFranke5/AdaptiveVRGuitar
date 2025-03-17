@@ -21,18 +21,31 @@ public class ChordReader : MonoBehaviour
     public float zOffsetDot2 = 0.1f;
     public float zOffsetDot3 = -0.1f;
 
+    public float yPosDot3 = 0.2f;  // Top dot
+    public float yPosDot2 = 0.0f;  // Middle dot
+    public float yPosDot1 = -0.2f; // Bottom dot
+
+
     void Start()
     {
-        try
+        string[] ports = SerialPort.GetPortNames();
+        if (ports.Length > 0)
         {
-            serialPort = new SerialPort(portName, baudRate);
+            serialPort = new SerialPort(ports[0], baudRate); // auto-select first available
             serialPort.ReadTimeout = 50;
-            serialPort.Open();
-            Debug.Log("Serial port successfully opened.");
+            try
+            {
+                serialPort.Open();
+                Debug.Log("Connected to: " + ports[0]);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error opening port: " + e.Message);
+            }
         }
-        catch (System.Exception e)
+        else
         {
-            Debug.LogError("Failed opening port: " + e.Message);
+            Debug.LogError("No COM ports detected.");
         }
     }
 
