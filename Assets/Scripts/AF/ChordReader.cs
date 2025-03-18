@@ -23,6 +23,8 @@ public class ChordReader : MonoBehaviour
      
      [Header("Audio Clips")]
     public AudioClip chordASound;
+    public AudioClip chordDSound;
+    public AudioClip chordESound;
 
     private AudioSource audioSource;
 
@@ -67,6 +69,22 @@ public class ChordReader : MonoBehaviour
             }
             catch { }
         }
+        // Keyboard input for playing chord sounds
+    if (Input.GetKeyDown(KeyCode.A)) // Press 'A' key for chord A
+    {
+        PlayChordSound("A");
+        MoveDotsForChord("A");
+    }
+    if (Input.GetKeyDown(KeyCode.D)) // Press 'D' key for chord D
+    {
+        PlayChordSound("D");
+        MoveDotsForChord("D");
+    }
+    if (Input.GetKeyDown(KeyCode.E)) // Press 'E' key for chord E
+    {
+        PlayChordSound("E");
+        MoveDotsForChord("E");
+    }
     }
 
     void ProcessData(string dataLine)
@@ -97,6 +115,12 @@ public class ChordReader : MonoBehaviour
             case "A":
                 audioSource.PlayOneShot(chordASound);
                 break;
+                case "D": // Add this case
+            audioSource.PlayOneShot(chordDSound);
+            break;
+        case "E": // Add this case
+            audioSource.PlayOneShot(chordESound);
+            break;
             // Add more cases for other chords
             default:
                 Debug.LogWarning("No sound assigned for chord: " + chordName);
@@ -187,4 +211,31 @@ public class ChordReader : MonoBehaviour
         if (serialPort != null && serialPort.IsOpen)
             serialPort.Close();
     }
+    void MoveDotsForChord(string chordName)
+{
+    int s1 = 0, s2 = 0, s3 = 0;
+
+    // Define mock sensor values for each chord
+    switch (chordName)
+    {
+        case "A":
+            s1 = 850; s2 = 650; s3 = 350; // Example values for chord A
+            break;
+        case "D":
+            s1 = 750; s2 = 150; s3 = 650; // Example values for chord D
+            break;
+        case "E":
+            s1 = 150; s2 = 250; s3 = 850; // Example values for chord E
+            break;
+        default:
+            return; // Do nothing for unrecognized chords
+    }
+
+    // Update the positions of the dots
+    UpdateDot(dot1, s1, yRange / 2f);
+    UpdateDot(dot2, s2, 0f);
+    UpdateDot(dot3, s3, -yRange / 2f);
+}
+
+
 }
