@@ -72,18 +72,25 @@ public class ChordReader : MonoBehaviour
         // Keyboard input for playing chord sounds
     if (Input.GetKeyDown(KeyCode.A)) // Press 'A' key for chord A
     {
+        
         PlayChordSound("A");
         MoveDotsForChord("A");
+        (string chord, string correctness) = DetectChord(850, 650, 350); // Mock values for A
+        Debug.Log($"Chord: {chord}, Correctness: {correctness}");
     }
     if (Input.GetKeyDown(KeyCode.D)) // Press 'D' key for chord D
     {
         PlayChordSound("D");
         MoveDotsForChord("D");
+         (string chord, string correctness) = DetectChord(750, 150, 650); // Mock values for D
+        Debug.Log($"Chord: {chord}, Correctness: {correctness}");
     }
     if (Input.GetKeyDown(KeyCode.E)) // Press 'E' key for chord E
     {
         PlayChordSound("E");
         MoveDotsForChord("E");
+        (string chord, string correctness) = DetectChord(150, 250, 850); // Mock values for E
+        Debug.Log($"Chord: {chord}, Correctness: {correctness}");
     }
     }
 
@@ -139,9 +146,11 @@ public class ChordReader : MonoBehaviour
 
         sensorText.text = $"S1={s1}, S2={s2}, S3={s3}";
 
-        string chord = DetectChord(s1, s2, s3);
+        (string chord, string correctness) = DetectChord(s1, s2, s3);
         UpdateChordUI(chord);
+        Debug.Log(correctness);
 
+        PlayChordSound(chord);
         UpdateDot(dot1, s1, yRange / 2f);
         UpdateDot(dot2, s2, 0f);
         UpdateDot(dot3, s3, -yRange / 2f);
@@ -165,25 +174,26 @@ public class ChordReader : MonoBehaviour
         }
 
         sensorText.text = $"S1={s1}, S2={s2}, S3={s3}";
-        string chord = DetectChord(s1, s2, s3);
+        (string chord, string correctness) = DetectChord(s1, s2, s3);
         UpdateChordUI(chord);
+        Debug.Log(correctness);
 
         UpdateDot(dot1, s1, yRange / 2f);
         UpdateDot(dot2, s2, 0f);
         UpdateDot(dot3, s3, -yRange / 2f);
     }
 
-    string DetectChord(int s1, int s2, int s3)
+    (string,string) DetectChord(int s1, int s2, int s3)
     {
         int MIN_DIFF = 100;
 
         if (s1 > s2 && s2 > s3 && (s1 - s3 >= MIN_DIFF))
-            return "A";
+            return ("A", "Correct!");
         if (s1 > s3 && s3 > s2 && (s1 - s2 >= MIN_DIFF))
-            return "D";
+            return ("D", "Correct!");
         if (s3 > s2 && s2 > s1 && (s3 - s1 >= MIN_DIFF))
-            return "E";
-        return "None";
+            return ("E", "Correct!");
+        return ("None", "Wrong"); // If no chord matches
     }
 
     void UpdateChordUI(string chord)
