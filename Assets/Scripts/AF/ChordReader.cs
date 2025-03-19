@@ -214,6 +214,7 @@ public class ChordReader : MonoBehaviour
         float fraction = Mathf.Clamp01(sensorValue / 1023f);
         float localX = Mathf.Lerp(-xRange / 2f, xRange / 2f, fraction);
         dot.localPosition = new Vector3(localX, yPos, -0.1f);
+        dot.localEulerAngles = new Vector3(0f, 0f, 180f); // Flips the dot rotation
     }
 
     void OnApplicationQuit()
