@@ -8,155 +8,158 @@
 
 ## Introduction
 
-**Adaptive VR Guitar** is an educational XR experience that helps individuals with **limited hand mobility** learn to play guitar chords in a **fun and immersive** way. By simulating a real guitar fretboard through a **wooden plank** fitted with **touch sensors**, the system enables users to **strum**, **press chords**, and **receive real-time feedback** in a virtual environment.
+**Adaptive VR Guitar** is a university group project developed in **Unity 6** that reimagines guitar learning for people with limited hand mobility. Our goal is to create an immersive, accessible educational experience. Using a physical prototype—a wooden plank equipped with three SoftPot membrane potentiometer sensors (50 mm)—an Arduino board reads sensor data and sends it via serial communication to Unity. In our current prototype, the Unity scene displays a canvas with three dots that represent the sensor (finger) positions on a virtual fretboard.
 
-**The problem:**  
-Many traditional instruments (like guitars) demand two fully functional hands, leaving individuals with **physical disabilities** feeling excluded from music-making.
-
-**The proposed solution:**  
-By merging **Arduino-based sensor input** with **Unity’s 3D engine**, we replicate the essential guitar experience in VR—**no left hand?** No problem! The interface is specifically adapted for one-handed or reduced mobility usage. This inclusive approach fosters a sense of **achievement**, **joy**, and **connection** to music.
+At this stage, the app functions much like a virtual synthesizer: it simply shows the sensor data (the dots) without any lesson content, menus, or advanced interaction. We have many exciting ideas for improvement (such as implementing interactive lessons, tab-based chord learning, refined chord detection logic, haptic feedback, and a full song/lesson mode), but these features are not implemented yet.
 
 ---
 
 ## Design Process
 
-### 1. Group Discussion
-Our design process began with an **open group brainstorming session**, during which we:
-- Used **Google Draw** to capture each member’s ideas.  
-- Explored different ways to simulate guitar-playing in VR.  
-- Emphasized inclusivity for people with **one-hand** or limited mobility.  
+### Group Discussion & Ideation
 
-This collaborative approach established a **shared vision** for the project and guided us toward building a solution that feels both **intuitive** and **enjoyable**.
+- **Brainstorming:** We held a group session (using tools like Google Draw) to discuss how to best adapt guitar learning for one-handed users.  
+- **Initial Prototype:** Our first working prototype uses a wooden plank with three SoftPot sensors that transmit raw sensor values to Unity via Arduino.
+- **Key Insight:** The current state displays three moving dots on a canvas that represent the sensor values. This serves as a foundation for future features such as lessons and interactive chord learning.
 
-### 2. Storyline
-We carefully crafted a **three-part narrative** to clarify the user journey:
+### Storyline & User Journey
 
-- **Beginning:** Introduce the challenge of limited hand mobility in guitar playing.  
-- **Middle:** Show the struggles and how the app addresses them (wooden plank with sensors, VR environment).  
-- **End:** Present the final solution—an immersive guitar lesson that fosters empowerment and creativity.
+- **Storyline:**  
+  - **Beginning:** Introduce the challenge of learning guitar with limited hand mobility.
+  - **Middle:** In future iterations, guide the user through interactive lessons (displaying chord shapes like A, D, and E in a tab-like format similar to Ultimate Guitar) where they play along with the lesson.
+  - **End:** Provide feedback (audio, visual, and haptic) to help users master the correct chord shapes.
+- **User Journey:**  
+  1. The user starts in the VR scene and sees the virtual fretboard with three sensor dots.
+  2. (Planned) In lesson mode, the app would scroll through chord shapes slowly, prompting the user to place their fingers correctly.
+  3. (Planned) When a correct chord is detected, the app will play the corresponding chord sound and provide positive feedback; if incorrect, it will signal errors via visual cues and vibration.
 
-### 3. Transition of Ideas
-Originally, we considered a simple **pocket fretboard**. Over time, we evolved the concept into a **fingerless glove** attached to a **wooden plank** with **touch sensors**. This setup:
-- Simplifies the user’s interaction.  
-- Makes the transition from real to virtual more **seamless** (once you touch the plank, you enter the VR guitar lesson).  
-- Keeps the user grounded and comfortable during the initial learning phase (e.g., using passthrough).
+### Transition & Interaction
 
-### 4. Idea Development
-**Key innovations** emerged from user feedback and iterative design:
-- **Touch sensors** embedded in a wooden plank to simulate a fretboard.  
-- **Arduino microcontroller** processes sensor data and relays it to Unity.  
-- **One-handed accessibility**: The interface and interaction mechanics are optimized for minimal hand usage.
-
-Ultimately, this ensures an experience that’s not just functional but also **inclusive** and **empowering** for a wide range of users.
-
-### User Personas
-1. **Target User A: The Inclusive Music Seeker**  
-   - Physical disability (e.g., one hand) seeking to learn guitar.  
-   - Needs an **adaptive** platform that replicates a real guitar without extra modifications.  
-   - Gains **empowerment** and a sense of **achievement** by mastering chords.
-
-2. **Target User B: The Technology & Creativity Advocate**  
-   - Musicians, educators, or hobbyists passionate about **innovation** in music.  
-   - Seeks an **immersive** and advanced approach to teaching/learning guitar.  
-   - Values inclusive technology that **breaks down barriers** in music education.
-
-### User Journey & Experience
-- **Phase 1:** Introductory stage—users get comfortable with the wooden plank and sensors, possibly in pass-through or partial VR mode.  
-- **Phase 2:** Full immersion—Unity simulates a **dynamic guitar environment**, complete with chord shapes, audio, and visual cues.  
-- **Phase 3:** Expanding skill—users explore different chords, strumming patterns, or entire songs, receiving **real-time** feedback on accuracy.
-
-### Wireframes & Prototypes
-- **Sketches** of a simple on-screen fretboard indicating where the sensors map to chord shapes.  
-- **Mock-ups** showing an interactive environment with a **floating guitar neck** in VR.  
-- **Playtests** used a wooden prototype to refine sensor placement, comfort, and chord detection logic.
+- **Physical-to-Virtual Transition:**  
+  Initially, we considered using a pocket fretboard, but we refined the concept to a wooden plank with sensors mounted on it. Touch interactions on the plank will eventually trigger the transition into lesson modes and interactive menus.
+- **Interaction:**  
+  Currently, the app behaves like a virtual synth by showing the sensor dots only. Future improvements will allow the user to interact with an evolving lesson system, where they simply place their fingers in the correct chord shape.
 
 ---
 
-## System Description
+## System Description & Planned Features
 
-### Features
+### Current State
 
-1. **One-Handed Guitar Experience**  
-   Specifically designed for individuals with **one hand** or those recovering from injuries.
+- **Hardware:**  
+  - A wooden plank with **three SoftPot membrane potentiometers (50 mm)**.
+  - An Arduino board that reads sensor values from analog pins A0, A1, and A2 and sends them via serial communication.
+- **Software:**  
+  - A **Unity 6** project that reads these sensor values and displays a canvas with **three dots** representing the finger positions on a virtual fretboard.
+  - Basic chord detection logic (using a simple 3×3 grid system) is in place, but it currently only supports three chords (A, D, and E) and does not yet include lessons or menus.
 
-2. **Unity-Powered Gameplay**  
-   Delivers a **realistic** and immersive guitar simulation using **C# scripts** and advanced 3D visuals.
+### Planned Features (Not Yet Implemented)
 
-3. **Touch Sensor Integration**  
-   Simulates fretboard and string interactions, capturing finger presses on **SoftPot membrane** sensors.
+- **Tab-Based Chord Learning System:**  
+  - Display a static chord reference ("legend") showing valid chord shapes.
+  - Implement a lesson mode where chords scroll slowly—similar to playing along with Ultimate Guitar tabs.
+  - Provide positive feedback (audio, visual, and haptic) for correct chord shapes and negative feedback for errors.
 
-4. **Arduino-Driven Input**  
-   Ensures **smooth** and accurate translation of physical sensor data to chord shapes in Unity.
+- **Enhanced Chord Recognition:**  
+  - Shift the chord detection logic fully to Unity so that Arduino only sends raw sensor values.
+  - Map sensor values to a 3×3 grid with each sensor interpreted as being in one of three positions (Left, Middle, Right).
+  - Support multiple valid variations for each chord (A, D, and E) as defined in our planned grid mappings.
 
-5. **Interactive Feedback**  
-   Real-time **visual, audio, and haptic** cues guide users to place correct chord shapes.
+- **Haptic Feedback Integration:**  
+  - Use vibration motors (via Arduino) to give tactile feedback when a wrong chord is played.
 
-*(A short demo video or live link can be placed here if available.)*
+- **Sound Integration:**  
+  - Play corresponding chord audio clips (for A, D, and E) when the correct chord is detected.
+  - Future expansions include smooth chord transitions and multiple difficulty levels.
+
+- **Performance Tracking:**  
+  - Implement a basic score system and display simple statistics (accuracy, streaks) on-screen.
+
+- **Usability Enhancements & Simulation Mode:**  
+  - Add mock sensor data functionality so that sensor input and smooth movement of the dots can be simulated without the physical hardware.
+  - Optimize the UI by moving sensor dots above the fretboard, resizing them, and positioning the chord text and sensor values for clarity.
+
+*Note: While we have many ideas for future improvements, the current prototype only functions as a basic virtual synth that displays sensor data.*
 
 ---
 
 ## Installation
 
-Below is a summary of how to **install and run** the project. More detailed steps are found in the project documentation.
+### Prerequisites
 
-| Platform    | Device        | Requirements                             | Commands                                                                                                                                     |
-|-------------|---------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| **Windows** | Meta Quest 2  | Unity 2022.3+ <br> Arduino (optional)    | 1. `git clone https://github.com/user/AdaptiveVRGuitar.git` <br> 2. Open `ChordTestScene.unity` in Unity. <br> 3. **Build & Run** on Quest.   |
-| **Android** | Phone         | Android 19+ <br> ARCore 1.18+            | 1. `git clone https://github.com/user/AdaptiveVRGuitar.git` <br> 2. Switch platform to **Android** in Unity. <br> 3. **Build & Run**.        |
+- **Unity Hub** with **Unity Editor LTS 2022.3 or higher** (for Unity 6 projects)
+- (Optional) An **Arduino** board with three SoftPot sensors for hardware testing
 
-### Detailed Steps
-1. **Install Unity Hub** and **Unity Editor** (LTS 2022.3 or higher).  
-2. In **Unity Hub**, click **Add project** and open the `AdaptiveVRGuitar` folder.  
-3. **Switch Platform** to Android if building for Quest or phone:  
-   - `File > Build Settings > Android > Switch Platform`.  
-4. (Optional) If you want **Oculus VR**:  
-   - Go to **Project Settings** > **XR Plug-in Management** and enable **Oculus** for Android.  
-5. **Build** the APK and deploy to your device.
+### Steps
 
-### Arduino Setup (Optional)
-- Connect **SoftPot membrane sensors** to analog pins `A0`, `A1`, `A2`.  
-- Upload the provided `sensors.ino` to your Arduino.  
-- Modify your **Serial Port** in `ChordReader.cs` or `SensorInput.cs` if needed.
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/yourusername/AdaptiveVRGuitar.git
+   cd AdaptiveVRGuitar
+   ```
+
+2. **Open the Project in Unity:**
+   - Launch **Unity Hub** and open the cloned project.
+
+3. **(Optional) Switch Platform:**
+   - For Android/Meta Quest: Go to **File > Build Settings**, select **Android**, and click **Switch Platform**.
+
+4. **Configure XR Settings (if using VR):**
+   - Navigate to **Project Settings > XR Plug-in Management** and enable your target XR platform (e.g., Oculus).
+
+5. **Build & Run:**
+   - In **Build Settings**, add your scene (e.g., `ChordTestScene.unity`).
+   - Click **Build and Run** to deploy to your device.
+
+6. **Arduino Setup (if using hardware):**
+   - Connect the three SoftPot sensors to analog pins A0, A1, and A2.
+   - Upload the `sensors.ino` sketch to your Arduino.
+   - Adjust the serial port settings in the Unity scripts if needed.
 
 ---
 
 ## Usage
 
-Once the application is **built and running** on your VR device (or phone):
+When you launch the app:
 
-- **Move/Look**: Use your Quest controllers or phone touchscreen swipes to navigate the environment.  
-- **Strum / Press Chords**: Place your finger(s) on the wooden plank sensors. In the simulated environment, you’ll see **3 dots** representing your finger positions.  
-- **Chord Feedback**: The system detects chord shapes in real time, providing **audio** (strumming sound) and **visual** feedback (chord name displayed).  
-- **Voice Commands** (if integrated): “OK, show me [chord name].”
+- **Navigation & Interaction:**
+  - The app shows a virtual fretboard with three dots representing the sensor inputs.
+  - Currently, the app functions as a virtual synth; it reads sensor values (or simulated mock data) and moves the dots accordingly.
+  
+- **Demo/Showcase Mode:**
+  - To record a showcase video, enable the **mock sensor input mode** so that you can simulate smooth and fluid movement of the dots even when the physical hardware is unavailable.
 
-### Tips & Best Practices
-- Ensure the **wooden plank** is positioned comfortably for your single-hand usage.  
-- Start with **simpler chords** (like A, D, E).  
-- If you don’t have the Arduino at hand, enable the **mock sensor** script to animate the dots for demonstration.
+- **Planned Future Features:**
+  - A lesson mode that scrolls through chord shapes in a tab-like format.
+  - Interactive menus, performance tracking, and refined chord detection with multiple valid variations.
+  - Haptic feedback and advanced sound integration for an enhanced user experience.
 
 ---
 
 ## References
 
-Throughout development, we drew inspiration from:  
-- **Yousician** and **Guitar Hero** for chord-based game mechanics.  
-- **OpenXR** and **Oculus** XR documentation for VR integration.  
-- **Arduino** libraries and sample code for sensor reading.
-
-Credit also goes to the **Unity** community for open-source scripts and tutorials on **VR input** and **audio**.
+This project draws inspiration from several sources:
+- **Guitar Hero, OSU, and Yousician** for interactive and engaging musical gameplay.
+- **Ultimate Guitar tabs** for the static tab format used in lessons.
+- Documentation and community projects on **Unity VR development** and **Arduino sensor integration**.
 
 ---
 
 ## Contributors
 
-- **Sakib Ahsan Dipto**  
-- **Andreas Franke**  
-- **Anum Faisal**  
+- **Sakib Ahsan Dipto**
+- **Andreas Franke**
+- **Anum Faisal**
 
-Contact us via [Team Email or Slack Channel] or visit our personal portfolios (links TBA).
+*For more details, please contact our team or check out our individual portfolios.*
 
 ---
 
 ## License
 
 This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for details.
+
+---
+
+*Note: This README reflects the current state of the project, which is a basic prototype acting as a virtual synth. Many planned improvements (interactive lessons, menus, refined chord detection, and additional feedback systems) remain to be implemented in future iterations.*
