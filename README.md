@@ -67,8 +67,8 @@ Our design process involved several key stages:
 
 1. **Clone the Repository:**  
    ```bash
-   git clone https://github.com/yourusername/AdaptiveGuitar.git
-   cd AdaptiveGuitar
+   git clone https://github.com/AndreasFranke/AdaptiveVRGuitar.git
+   cd AdaptiveVRGuitar
    ```
 
 2. **Open in Unity 6:**  
@@ -120,3 +120,7 @@ Our design process involved several key stages:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
+> **Note on Repository Name:**  
+> The repository is named **AdaptiveVRGuitar** because our original project scope included a VR implementation. Currently, our application is a desktop app that accurately detects finger positions on a physical fretboard (using sensor data) to play chord sounds, enabling users to play guitar with one hand. Changing the repository name now would disrupt the development environments of our group members, so we are keeping the original name. In the future, once we fully transition to a VR implementation, we may update the name accordingly.
+
