@@ -111,9 +111,9 @@ Our design process involved several key stages:
 
 ## Contributors
 
-- **Sakib Ahsan Dipto** – [Contact/Portfolio Link]  
-- **Anum Faisal** – [Contact/Portfolio Link]  
-- **Andreas Franke** – [Contact/Portfolio Link]
+- **Sakib Ahsan Dipto**
+- **Anum Faisal**
+- **Andreas Franke**
 
 ---
 
